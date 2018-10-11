@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mao.remind_test2">
+
+    <application
+        android:name="org.litepal.LitePalApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/welcome"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Welcome.WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Main.MainActivity">
+
+        </activity>
+        <activity android:name=".Login.LoginActivity">
+
+        </activity>
+        <activity android:name=".Clock.ClockActivity">
+
+        </activity>
+        <activity android:name=".Chronometer.ChronometerActivity">
+
+        </activity>
+        <activity android:name=".Stopwatch.StopwatchActivity">
+
+        </activity>
+        <activity android:name=".Today.TodayActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity android:name=".Today.AddtodayActivity">
+
+        </activity>
+        <activity android:name=".Today.ModifytodayActivity">
+
+        </activity>
+        <activity android:name=".Clock.AddclockActivity">
+
+        </activity>
+        <activity android:name=".Clock.RingActivity" >
+
+        </activity>
+        <activity android:name=".Clock.ModifyclockActivity" />
+
+        <receiver android:name=".Clock.ClockReceiver" />
+        <service android:name=".Chronometer.ChronometerService" />
+    </application>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+</manifest>
