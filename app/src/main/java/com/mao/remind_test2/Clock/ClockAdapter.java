@@ -1,5 +1,6 @@
 package com.mao.remind_test2.Clock;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +85,11 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.ViewHolder> 
         holder.info.setText(clockinfo.getText());
 
         holder.on_off.setText(clockinfo.getOn_off());
+        if (clockinfo.getOn_off().equals("on")){
+            holder.on_off.setBackgroundColor(Color.parseColor("#00ff00"));
+        }if (clockinfo.getOn_off().equals("off")){
+            holder.on_off.setBackgroundColor(Color.parseColor("#8C7B62"));
+        }
 
         holder.on_off.setOnClickListener(new View.OnClickListener() {//设置按钮点击事件
             @Override
