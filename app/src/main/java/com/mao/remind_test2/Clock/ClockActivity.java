@@ -11,8 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,10 +80,10 @@ public class ClockActivity extends AppCompatActivity{
             clockinfoList.add(clockinfo1);
         }
 
-        clockAdapter.setOnButtonClickListener(new ClockAdapter.OnButtonClickListener() {
+        clockAdapter.setOnCheckedChangeListener(new ClockAdapter.OnCheckedChangeListener() {
             @Override
-            public void onclick(View view, int position) {
-
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b, int position) {
+                if (!compoundButton.isPressed()){return;}//非点击开关不使用此监听
                 Calendar mCalendar=Calendar.getInstance();
                 mCalendar.setTimeInMillis(System.currentTimeMillis());
 
@@ -109,12 +111,7 @@ public class ClockActivity extends AppCompatActivity{
 
                     clockinfoList.clear();
 
-                    if (on_off.equals("on")){
-                        Intent intent=new Intent(ClockActivity.this,ClockReceiver.class);
-                        pi = PendingIntent.getBroadcast(ClockActivity.this, sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                        alarmManager.cancel(pi);
-                        on_off="off";
-                    }else {
+                    if (b){
                         if (mRepead.equals("只响一次")){
                             Intent intent=new Intent(ClockActivity.this,ClockReceiver.class);
                             intent.putExtra("msg",mText);
@@ -137,10 +134,16 @@ public class ClockActivity extends AppCompatActivity{
                             }
                         }
                         on_off="on";
+                    }else {
+                        Intent intent=new Intent(ClockActivity.this,ClockReceiver.class);
+                        pi = PendingIntent.getBroadcast(ClockActivity.this, sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.cancel(pi);
+                        on_off="off";
                     }}
                 Clockinfo clockinfo=new Clockinfo();
                 clockinfo.setOn_off(on_off);
                 clockinfo.updateAll("id=?",id2);
+                Log.d("haha", "onCheckedChanged: "+on_off+position);
 
                 List<Clockinfo> clockinfos= DataSupport.order("hour asc,minute asc").find(Clockinfo.class);
                 for (Clockinfo clockinfo1:clockinfos){
