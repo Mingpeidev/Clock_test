@@ -12,12 +12,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.mao.remind_test2.Clock.ClockReceiver;
 import com.mao.remind_test2.R;
-
 import org.litepal.crud.DataSupport;
-
 import java.util.Calendar;
 import java.util.List;
 
@@ -127,8 +124,6 @@ public class ModifytodayActivity extends AppCompatActivity{
                 todayinfo.setSign(sign);
                 todayinfo.updateAll("id =? ",id);
 
-                Intent intent2=new Intent(ModifytodayActivity.this,TodayActivity.class);
-                startActivity(intent2);
                 finish();
             }
         });
@@ -136,8 +131,6 @@ public class ModifytodayActivity extends AppCompatActivity{
         cacel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(ModifytodayActivity.this,TodayActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

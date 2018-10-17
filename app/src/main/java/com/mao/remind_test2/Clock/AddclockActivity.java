@@ -111,8 +111,6 @@ public class AddclockActivity extends AppCompatActivity{
 
                 clockinfo.save();
 
-                Intent intent=new Intent(AddclockActivity.this,ClockActivity.class);
-                startActivity(intent);
                 finish();
 
             }
@@ -121,8 +119,6 @@ public class AddclockActivity extends AppCompatActivity{
         cancal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(AddclockActivity.this,ClockActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.mao.remind_test2.Clock.RingActivity;
 import com.mao.remind_test2.R;
 
@@ -21,7 +21,7 @@ import com.mao.remind_test2.R;
  * Created by Mingpeidev on 2018/6/22.
  */
 
-public class ChronometerActivity extends AppCompatActivity {
+public class ChronometerActivity extends Fragment {
     private TextView timevw=null;
     private Button settime=null;
     private Button start=null;
@@ -46,7 +46,7 @@ public class ChronometerActivity extends AppCompatActivity {
                     {
                         returntime.setText("时间到");
                         start.setText("开始");
-                        Intent intent=new Intent(ChronometerActivity.this, RingActivity.class);
+                        Intent intent=new Intent(getActivity(), RingActivity.class);
                         startActivity(intent);
                     }
                     break;
@@ -63,19 +63,15 @@ public class ChronometerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActionBar actionBar=getSupportActionBar();
-        if (actionBar!=null){
-            actionBar.hide();
-        }
-        setContentView(R.layout.chronometer_layout);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.chronometer_layout, null);
 
-        timevw=(TextView)findViewById(R.id.tv_time);
-        settime=(Button)findViewById(R.id.btn_settime);
-        start=(Button)findViewById(R.id.btn_start);
-        stop=(Button)findViewById(R.id.btn_stop);
-        returntime=(TextView)findViewById(R.id.returntime);
+        timevw=view.findViewById(R.id.tv_time);
+        settime=view.findViewById(R.id.btn_settime);
+        start=view.findViewById(R.id.btn_start);
+        stop=view.findViewById(R.id.btn_stop);
+        returntime=view.findViewById(R.id.returntime);
 
 
         timevw.setText(formateTimer(timer_couting));
@@ -87,19 +83,19 @@ public class ChronometerActivity extends AppCompatActivity {
         settime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new TimePickerDialog(ChronometerActivity.this,android.R.style.Theme_Holo_Light_Panel, new TimePickerDialog.OnTimeSetListener() {
+                new TimePickerDialog(getActivity(),android.R.style.Theme_Holo_Light_Panel, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourofday, int minute) {
-                     total=(long) (hourofday*60+minute)*60000;
-                     chronometerService = ChronometerService.getInstance(new MyCountDownLisener(),total);
-                     initServiceCountDownTimerStatus();
-                     start.setText("开始");
-                     if (total>0){
-                         returntime.setText("时间设置成功");
-                     }else {
-                         returntime.setText("");
-                     }
-                     chronometerService.stopSet();//设置时停止上一个计时
+                        total=(long) (hourofday*60+minute)*60000;
+                        chronometerService = ChronometerService.getInstance(new MyCountDownLisener(),total);
+                        initServiceCountDownTimerStatus();
+                        start.setText("开始");
+                        if (total>0){
+                            returntime.setText("时间设置成功");
+                        }else {
+                            returntime.setText("");
+                        }
+                        chronometerService.stopSet();//设置时停止上一个计时
                     }
                 },0,0,true).show();
             }
@@ -111,7 +107,7 @@ public class ChronometerActivity extends AppCompatActivity {
                 switch (chronometerService.getTimerStatus()){
                     case ChronometerUtil.PREPARE:
                         if (chronometerService.getCountingTime()==0){
-                            Toast.makeText(ChronometerActivity.this,"未设置时间！",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(),"未设置时间！",Toast.LENGTH_SHORT).show();
                         }else {
                             chronometerService.startCountDown();
                             start.setText("暂停");
@@ -138,10 +134,10 @@ public class ChronometerActivity extends AppCompatActivity {
                 start.setText("开始");
                 chronometerService.stopCountDown();//停止计时并归零
                 returntime.setText("");
-                Toast.makeText(ChronometerActivity.this,"停止计时",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"停止计时",Toast.LENGTH_SHORT).show();
             }
         });
-
+        return view;
     }
 
     private String formateTimer(long time){

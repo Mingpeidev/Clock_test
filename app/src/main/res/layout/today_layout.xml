@@ -5,25 +5,7 @@
     android:layout_height="wrap_content"
     android:background="#abcdef">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:text="日程"
-            android:textColor="#5838a3"
-            android:textSize="30sp" />
-        <ImageButton
-            android:id="@+id/backall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/backall"
-            android:layout_alignParentRight="true"/>
-    </RelativeLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

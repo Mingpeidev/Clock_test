@@ -3,20 +3,18 @@ package com.mao.remind_test2.Stopwatch;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.mao.remind_test2.R;
-
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -26,7 +24,7 @@ import java.util.TimerTask;
  * Created by Mingpeidev on 2018/6/22.
  */
 
-public class StopwatchActivity extends AppCompatActivity {
+public class StopwatchActivity extends Fragment {
 
     private List<Stopwatchinfo> stopwatchinfoList=new ArrayList<>();
 
@@ -61,25 +59,20 @@ public class StopwatchActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActionBar actionBar=getSupportActionBar();
-        if (actionBar!=null){
-            actionBar.hide();
-        }
-        setContentView(R.layout.stopwatch_layout);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.stopwatch_layout, null);
+        tvtime=view.findViewById(R.id.tv_time1);
+        start=view.findViewById(R.id.btn_start1);
+        stop=view.findViewById(R.id.btn_stop1);
 
-        tvtime=(TextView)findViewById(R.id.tv_time1);
-        start=(Button)findViewById(R.id.btn_start1);
-        stop=(Button)findViewById(R.id.btn_stop1);
+        stopwatch_recycle=view.findViewById(R.id.stopwatch_result);
 
-        stopwatch_recycle=(RecyclerView)findViewById(R.id.stopwatch_result);
-
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         stopwatch_recycle.setLayoutManager(linearLayoutManager);
         final StopwatchAdapter stopwatchAdapter=new StopwatchAdapter(stopwatchinfoList);
         stopwatch_recycle.setAdapter(stopwatchAdapter);
-        stopwatch_recycle.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        stopwatch_recycle.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
 
 
         LitePal.getDatabase();
@@ -144,6 +137,7 @@ public class StopwatchActivity extends AppCompatActivity {
                 }
             }
         });
+        return view;
     }
 
     private String formateTimer(long time){

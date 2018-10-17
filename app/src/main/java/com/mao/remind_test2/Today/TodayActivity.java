@@ -4,24 +4,23 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.mao.remind_test2.Clock.ClockReceiver;
-import com.mao.remind_test2.Clock.Clockinfo;
-import com.mao.remind_test2.Main.MainActivity;
 import com.mao.remind_test2.R;
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
@@ -33,7 +32,7 @@ import java.util.List;
  * Created by Mingpeidev on 2018/6/22.
  */
 
-public class TodayActivity extends AppCompatActivity {
+public class TodayActivity extends Fragment {
 
     private AlarmManager alarmManager;
     private PendingIntent pi;
@@ -41,7 +40,6 @@ public class TodayActivity extends AppCompatActivity {
 
     private List<Todayinfo> todayinfoList=new ArrayList<>();
 
-    private ImageButton back=null;
     private ImageButton add=null;
     private ImageButton search=null;
     private EditText inputsubject=null;
@@ -50,31 +48,25 @@ public class TodayActivity extends AppCompatActivity {
     private RecyclerView result = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActionBar actionBar=getSupportActionBar();
-        if (actionBar!=null){
-            actionBar.hide();
-        }
-        setContentView(R.layout.today_layout);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.today_layout, null);
+        add=view.findViewById(R.id.addtoday);
+        search=view.findViewById(R.id.searchtoday);
+        inputsubject=view.findViewById(R.id.inputsubject);
+        inputdate=view.findViewById(R.id.inputdate);
 
-        add=(ImageButton)findViewById(R.id.addtoday);
-        search=(ImageButton)findViewById(R.id.searchtoday);
-        inputsubject=(EditText) findViewById(R.id.inputsubject);
-        inputdate=(Button)findViewById(R.id.inputdate);
-        back=(ImageButton)findViewById(R.id.backall);
+        result = view.findViewById(R.id.today_result);
 
-        result = (RecyclerView) findViewById(R.id.today_result);
-
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         result.setLayoutManager(linearLayoutManager);
         final TodayAdapter todayAdapter=new TodayAdapter(todayinfoList);
         result.setAdapter(todayAdapter);
-        result.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        result.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
 
         LitePal.getDatabase();
 
-        alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager=(AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
 
         //显示所有日程
         final List<Todayinfo> todayinfos= DataSupport.findAll(Todayinfo.class);
@@ -95,16 +87,15 @@ public class TodayActivity extends AppCompatActivity {
                 TextView id1=view1.findViewById(R.id.num);
                 String id2=id1.getText().toString();
 
-                Intent intent=new Intent(TodayActivity.this,ModifytodayActivity.class);
+                Intent intent=new Intent(getActivity(),ModifytodayActivity.class);
                 intent.putExtra("idput",id2);
                 startActivity(intent);
-                finish();
 
             } });
         todayAdapter.setOnItemLongClickListener(new TodayAdapter.OnItemLongClickListener() {//删除
             @Override
             public void onItemLongClick(View view,final int position) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(TodayActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("提示")
                         .setIcon(R.drawable.welcome)
                         .setMessage("是否删除选中行?")
@@ -119,8 +110,8 @@ public class TodayActivity extends AppCompatActivity {
                                         List<Todayinfo> todayinfos= DataSupport.where("id =?",id2).find(Todayinfo.class);
                                         for (Todayinfo todayinfo:todayinfos){
                                             sign=todayinfo.getSign();
-                                            Intent intent=new Intent(TodayActivity.this,ClockReceiver.class);
-                                            pi = PendingIntent.getBroadcast(TodayActivity.this, sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                                            Intent intent=new Intent(getActivity(),ClockReceiver.class);
+                                            pi = PendingIntent.getBroadcast(getActivity(), sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
                                             alarmManager.cancel(pi);
                                         }
 
@@ -145,16 +136,8 @@ public class TodayActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(TodayActivity.this,AddtodayActivity.class);
+                Intent intent=new Intent(getActivity(),AddtodayActivity.class);
                 startActivity(intent);
-                finish();
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
             }
         });
 
@@ -165,15 +148,15 @@ public class TodayActivity extends AppCompatActivity {
                 String inputSubject = inputsubject.getText().toString();
 
                 todayinfoList.clear();
-                    List<Todayinfo> todayinfos= DataSupport.where("subject like ?","%"+inputSubject+"%").find(Todayinfo.class);
-                    for (Todayinfo todayinfo:todayinfos){
-                        int id=todayinfo.getId();
-                        String subject=todayinfo.getSubject();
-                        String body=todayinfo.getBody();
-                        String date=todayinfo.getDate();
-                        Todayinfo todayinfo1=new Todayinfo(id,subject,body,date);
-                        todayinfoList.add(todayinfo1);
-                    }
+                List<Todayinfo> todayinfos= DataSupport.where("subject like ?","%"+inputSubject+"%").find(Todayinfo.class);
+                for (Todayinfo todayinfo:todayinfos){
+                    int id=todayinfo.getId();
+                    String subject=todayinfo.getSubject();
+                    String body=todayinfo.getBody();
+                    String date=todayinfo.getDate();
+                    Todayinfo todayinfo1=new Todayinfo(id,subject,body,date);
+                    todayinfoList.add(todayinfo1);
+                }
                 todayAdapter.refreshData(todayinfoList);
             }
         });
@@ -181,7 +164,7 @@ public class TodayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                new DatePickerDialog(TodayActivity.this,
+                new DatePickerDialog(getActivity(),
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int dayofmonth) {
@@ -201,7 +184,7 @@ public class TodayActivity extends AppCompatActivity {
                         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
+        return view;
     }
 
 }

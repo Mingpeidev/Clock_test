@@ -129,8 +129,6 @@ public class ModifyclockActivity extends AppCompatActivity{
                 clockinfo.setOn_off("on");
                 clockinfo.updateAll("id=?",id);
 
-                Intent intent=new Intent(ModifyclockActivity.this,ClockActivity.class);
-                startActivity(intent);
                 finish();
 
             }
@@ -139,8 +137,6 @@ public class ModifyclockActivity extends AppCompatActivity{
         cancal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(ModifyclockActivity.this,ClockActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

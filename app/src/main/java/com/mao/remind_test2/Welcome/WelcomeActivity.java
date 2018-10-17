@@ -1,20 +1,15 @@
 package com.mao.remind_test2.Welcome;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import com.mao.remind_test2.Login.LoginActivity;
 import com.mao.remind_test2.Main.MainActivity;
 import com.mao.remind_test2.R;
-
 
 
 public class WelcomeActivity extends AppCompatActivity {

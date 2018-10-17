@@ -6,12 +6,6 @@
     android:background="#abcdef">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="秒表"
-        android:textSize="30sp"
-        android:layout_gravity="center"/>
-    <TextView
         android:id="@+id/tv_time1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

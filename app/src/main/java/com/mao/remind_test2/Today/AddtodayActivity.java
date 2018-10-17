@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.mao.remind_test2.Clock.ClockReceiver;
 import com.mao.remind_test2.R;
 import java.util.Calendar;
@@ -102,9 +101,6 @@ public class AddtodayActivity extends AppCompatActivity{
                 }else {
                     alarmManager.set(AlarmManager.RTC_WAKEUP,time,pi);
                 }
-
-                Intent intent1=new Intent(AddtodayActivity.this,TodayActivity.class);
-                startActivity(intent1);
                 finish();
             }
         });
@@ -112,8 +108,6 @@ public class AddtodayActivity extends AppCompatActivity{
         cacel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(AddtodayActivity.this,TodayActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

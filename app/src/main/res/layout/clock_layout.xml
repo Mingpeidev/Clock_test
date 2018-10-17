@@ -23,12 +23,6 @@
             android:text="闹钟"
             android:textColor="#00ff00"
             android:textSize="30sp" />
-        <ImageButton
-            android:id="@+id/backall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/backall"
-            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
     <TextClock

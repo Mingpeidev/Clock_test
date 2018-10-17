@@ -3,23 +3,21 @@ package com.mao.remind_test2.Clock;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.mao.remind_test2.Main.MainActivity;
 import com.mao.remind_test2.R;
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
@@ -31,7 +29,7 @@ import java.util.List;
  * Created by Mingpeidev on 2018/6/22.
  */
 
-public class ClockActivity extends AppCompatActivity{
+public class ClockActivity extends Fragment{
 
     private List<Clockinfo> clockinfoList=new ArrayList<>();
     private AlarmManager alarmManager;
@@ -39,34 +37,28 @@ public class ClockActivity extends AppCompatActivity{
 
     private Button addBtn=null;
     private RecyclerView clock_recycle;
-    private ImageButton back;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActionBar actionBar=getSupportActionBar();
-        if (actionBar!=null){
-            actionBar.hide();
-        }
-        setContentView(R.layout.clock_layout);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.clock_layout, null);
+        addBtn=view.findViewById(R.id.addclock);
+        clock_recycle=view.findViewById(R.id.clock_recycleview);
 
-        addBtn=(Button)findViewById(R.id.addclock);
-        back=(ImageButton)findViewById(R.id.backall);
-        clock_recycle=(RecyclerView)findViewById(R.id.clock_recycleview);
+        alarmManager=(AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
-
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);//瀑布流
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());//瀑布流
         clock_recycle.setLayoutManager(linearLayoutManager);
 
         final ClockAdapter clockAdapter=new ClockAdapter(clockinfoList);//绑定适配器
         clock_recycle.setAdapter(clockAdapter);
 
-        clock_recycle.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));//添加分割线
+        clock_recycle.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));//添加分割线
 
         LitePal.getDatabase();
 
         //显示所有闹钟
+        clockinfoList.clear();
         final List<Clockinfo> clockinfos= DataSupport.order("hour asc,minute asc").find(Clockinfo.class);
         for (Clockinfo clockinfo:clockinfos){
             int id=clockinfo.getId();
@@ -113,19 +105,19 @@ public class ClockActivity extends AppCompatActivity{
 
                     if (b){
                         if (mRepead.equals("只响一次")){
-                            Intent intent=new Intent(ClockActivity.this,ClockReceiver.class);
+                            Intent intent=new Intent(getActivity(),ClockReceiver.class);
                             intent.putExtra("msg",mText);
-                            pi = PendingIntent.getBroadcast(ClockActivity.this, sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                            pi = PendingIntent.getBroadcast(getActivity(), sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
                             if(mCalendar.getTimeInMillis()<System.currentTimeMillis()){
                                 alarmManager.set(AlarmManager.RTC_WAKEUP,mCalendar.getTimeInMillis()+24*60*60*1000,pi);
                             }else {
                                 alarmManager.set(AlarmManager.RTC_WAKEUP,mCalendar.getTimeInMillis(),pi);
                             }
                         }else {
-                            Intent intent1 = new Intent(ClockActivity.this,ClockReceiver.class);
+                            Intent intent1 = new Intent(getActivity(),ClockReceiver.class);
                             intent1.putExtra("msg",mText);
                             intent1.putExtra("interval",1000*24*60*60);
-                            pi = PendingIntent.getBroadcast(ClockActivity.this, sign,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
+                            pi = PendingIntent.getBroadcast(getActivity(), sign,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
                             intent1.putExtra("sign",sign);
                             if(mCalendar.getTimeInMillis()<System.currentTimeMillis()){
                                 alarmManager.setWindow(AlarmManager.RTC_WAKEUP,mCalendar.getTimeInMillis()+24*60*60*1000,1000*24*60*60,pi);
@@ -135,8 +127,8 @@ public class ClockActivity extends AppCompatActivity{
                         }
                         on_off="on";
                     }else {
-                        Intent intent=new Intent(ClockActivity.this,ClockReceiver.class);
-                        pi = PendingIntent.getBroadcast(ClockActivity.this, sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                        Intent intent=new Intent(getActivity(),ClockReceiver.class);
+                        pi = PendingIntent.getBroadcast(getActivity(), sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
                         alarmManager.cancel(pi);
                         on_off="off";
                     }}
@@ -170,17 +162,16 @@ public class ClockActivity extends AppCompatActivity{
                 TextView id1=view1.findViewById(R.id.clockid);
                 String id2=id1.getText().toString();
 
-                Intent intent=new Intent(ClockActivity.this,ModifyclockActivity.class);
+                Intent intent=new Intent(getActivity(),ModifyclockActivity.class);
                 intent.putExtra("clockidput",id2);
                 startActivity(intent);
-                finish();
 
             } });
         clockAdapter.setOnItemLongClickListener(new ClockAdapter.OnItemLongClickListener() {//删除
             @Override
             public void onItemLongClick(View view, final int position) {//长按删除
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ClockActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("提示")
                         .setIcon(R.drawable.welcome)
                         .setMessage("是否删除选中闹钟?")
@@ -192,9 +183,9 @@ public class ClockActivity extends AppCompatActivity{
                                         String id2=id1.getText().toString();
                                         List<Clockinfo> clockinfos1= DataSupport.where("id =?",id2).find(Clockinfo.class);
                                         for (Clockinfo clockinfo:clockinfos1){
-                                            Intent intent=new Intent(ClockActivity.this,ClockReceiver.class);
+                                            Intent intent=new Intent(getActivity(),ClockReceiver.class);
                                             int sign=clockinfo.getSign();
-                                            pi = PendingIntent.getBroadcast(ClockActivity.this, sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                                            pi = PendingIntent.getBroadcast(getActivity(), sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
                                             alarmManager.cancel(pi);
                                         }
 
@@ -218,18 +209,11 @@ public class ClockActivity extends AppCompatActivity{
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(ClockActivity.this,AddclockActivity.class);
+                Intent intent=new Intent(getActivity(),AddclockActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
+        return view;
     }
 }
