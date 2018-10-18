@@ -8,13 +8,13 @@ import android.support.v7.app.AppCompatActivity;
  * Created by Mingpeidev on 2018/8/6.
  */
 
-public class ClockHelp extends AppCompatActivity{
+public class ClockHelp extends AppCompatActivity {
     private AlarmManager alarmManager;
     private PendingIntent pi;
 
 
-    public void Setclock(){
-        alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
+    public void Setclock() {
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#42abec">
+    android:background="#42abec"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="100sp"
@@ -19,6 +19,6 @@
         android:layout_marginTop="50sp"
         android:text="你的时间，你做主"
         android:textColor="#00ffff"
-        android:textSize="24sp"/>
+        android:textSize="24sp" />
 
 </LinearLayout>

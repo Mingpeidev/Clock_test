@@ -5,14 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.mao.remind_test2.R;
+
 import java.util.List;
 
 /**
  * Created by Mingpeidev on 2018/7/3.
  */
 
-public class StopwatchAdapter extends RecyclerView.Adapter<StopwatchAdapter.ViewHolder>{
+public class StopwatchAdapter extends RecyclerView.Adapter<StopwatchAdapter.ViewHolder> {
 
     private List<Stopwatchinfo> mStopwatchinfo;
 
@@ -23,8 +25,8 @@ public class StopwatchAdapter extends RecyclerView.Adapter<StopwatchAdapter.View
 
         ViewHolder(View itemView) {
             super(itemView);
-            stopwatchid=itemView.findViewById(R.id.stopwatchid);
-            stopwtchtime =  itemView.findViewById(R.id.stopwatchtime);
+            stopwatchid = itemView.findViewById(R.id.stopwatchid);
+            stopwtchtime = itemView.findViewById(R.id.stopwatchtime);
         }
     }
 
@@ -43,12 +45,13 @@ public class StopwatchAdapter extends RecyclerView.Adapter<StopwatchAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        Stopwatchinfo stopwatchinfo=mStopwatchinfo.get(position);
+        Stopwatchinfo stopwatchinfo = mStopwatchinfo.get(position);
 
-        holder.stopwatchid.setText(String.valueOf(getItemCount()-position));
+        holder.stopwatchid.setText(String.valueOf(getItemCount() - position));
         holder.stopwtchtime.setText(stopwatchinfo.getTime());
 
     }
+
     public void refreshData(List<Stopwatchinfo> valueList) {
         this.mStopwatchinfo = valueList;
         notifyDataSetChanged();

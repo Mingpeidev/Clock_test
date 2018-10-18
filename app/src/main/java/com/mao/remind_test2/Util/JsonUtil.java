@@ -8,11 +8,11 @@ import org.json.JSONObject;
  */
 //解析json数据
 public class JsonUtil {
-    public static int getResult(String key,String json){
+    public static int getResult(String key, String json) {
 
         try {
-            JSONObject jsonObject=new JSONObject(json);
-            int result=jsonObject.getInt(key);
+            JSONObject jsonObject = new JSONObject(json);
+            int result = jsonObject.getInt(key);
             return result;
         } catch (JSONException e) {
             e.printStackTrace();

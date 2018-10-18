@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#abcdef">
+    android:background="#abcdef"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_time1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="00:00:00"
         android:layout_marginTop="100sp"
-        android:textSize="30sp"/>
+        android:text="00:00:00"
+        android:textSize="30sp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30sp">
+
         <Button
             android:id="@+id/btn_start1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="开始"/>
+            android:text="开始"
+            android:textSize="15sp" />
+
         <Button
             android:id="@+id/btn_stop1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="重置"/>
+            android:text="重置"
+            android:textSize="15sp" />
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stopwatch_result"
-        android:background="#8863a35d"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:background="#8863a35d"></android.support.v7.widget.RecyclerView>
 </LinearLayout>

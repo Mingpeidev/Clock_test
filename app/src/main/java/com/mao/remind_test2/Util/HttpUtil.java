@@ -12,11 +12,11 @@ import java.net.URL;
  */
 
 public class HttpUtil {
-    public HttpUtil(){
+    public HttpUtil() {
 
     }
 
-    public static String sendGet(String request_url, String params){
+    public static String sendGet(String request_url, String params) {
         try {
             URL url = new URL(request_url + params);//转化类对象
 
@@ -37,6 +37,7 @@ public class HttpUtil {
         }
         return "";
     }
+
     private static String inputStream2String(InputStream inputStream) {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

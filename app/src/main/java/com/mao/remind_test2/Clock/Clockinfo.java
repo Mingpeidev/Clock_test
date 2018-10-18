@@ -6,7 +6,7 @@ import org.litepal.crud.DataSupport;
  * Created by Mingpeidev on 2018/6/28.
  */
 
-public class Clockinfo extends DataSupport{
+public class Clockinfo extends DataSupport {
     private int id;
     private int sign;
     private int hour;
@@ -16,21 +16,22 @@ public class Clockinfo extends DataSupport{
     private String text;
     private String on_off;
 
-    public Clockinfo(){}
-
-    public Clockinfo(int id,String time, String repead,String text,String on_off){
-        this.id=id;
-        this.time=time;
-        this.repead=repead;
-        this.text=text;
-        this.on_off=on_off;
+    public Clockinfo() {
     }
 
-    public Clockinfo(int hour,int minute, String repead,String text){
-        this.hour=hour;
-        this.minute=minute;
-        this.repead=repead;
-        this.text=text;
+    public Clockinfo(int id, String time, String repead, String text, String on_off) {
+        this.id = id;
+        this.time = time;
+        this.repead = repead;
+        this.text = text;
+        this.on_off = on_off;
+    }
+
+    public Clockinfo(int hour, int minute, String repead, String text) {
+        this.hour = hour;
+        this.minute = minute;
+        this.repead = repead;
+        this.text = text;
     }
 
     public void setId(int id) {
@@ -44,6 +45,7 @@ public class Clockinfo extends DataSupport{
     public void setHour(int hour) {
         this.hour = hour;
     }
+
     public void setMinute(int minute) {
         this.minute = minute;
     }

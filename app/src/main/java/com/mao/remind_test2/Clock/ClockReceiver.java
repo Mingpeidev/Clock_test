@@ -13,14 +13,15 @@ import android.content.Intent;
 public class ClockReceiver extends BroadcastReceiver {
     private PendingIntent pi;
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        AlarmManager alarmManager=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        int inteval=intent.getIntExtra("interval",0);
-        int sign=intent.getIntExtra("sign",0);
-        if(inteval!=0){
-            pi = PendingIntent.getBroadcast(context, sign,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-            alarmManager.setWindow(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+inteval,inteval,pi);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        int inteval = intent.getIntExtra("interval", 0);
+        int sign = intent.getIntExtra("sign", 0);
+        if (inteval != 0) {
+            pi = PendingIntent.getBroadcast(context, sign, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.setWindow(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + inteval, inteval, pi);
         }
         intent.setClass(context, RingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

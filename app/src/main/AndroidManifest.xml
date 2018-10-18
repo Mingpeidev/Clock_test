@@ -23,18 +23,6 @@
         <activity android:name=".Login.LoginActivity">
 
         </activity>
-        <activity android:name=".Clock.ClockActivity">
-
-        </activity>
-        <activity android:name=".Chronometer.ChronometerActivity">
-
-        </activity>
-        <activity android:name=".Stopwatch.StopwatchActivity">
-
-        </activity>
-        <activity android:name=".Today.TodayActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
         <activity android:name=".Today.AddtodayActivity">
 
         </activity>
@@ -44,15 +32,17 @@
         <activity android:name=".Clock.AddclockActivity">
 
         </activity>
-        <activity android:name=".Clock.RingActivity" >
+        <activity android:name=".Clock.RingActivity">
 
         </activity>
         <activity android:name=".Clock.ModifyclockActivity" />
 
         <receiver android:name=".Clock.ClockReceiver" />
+
         <service android:name=".Chronometer.ChronometerService" />
+        <service android:name=".Stopwatch.StopwatchService" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

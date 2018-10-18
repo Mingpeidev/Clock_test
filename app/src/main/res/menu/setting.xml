@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/sign"
-        android:title="签到"/>
+        android:title="签到" />
     <item
         android:id="@+id/quit"
-        android:title="退出登陆"/>
+        android:title="退出登陆" />
 </menu>

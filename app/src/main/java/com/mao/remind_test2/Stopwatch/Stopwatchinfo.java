@@ -6,14 +6,15 @@ import org.litepal.crud.DataSupport;
  * Created by Mingpeidev on 2018/7/3.
  */
 
-public class Stopwatchinfo extends DataSupport{
+public class Stopwatchinfo extends DataSupport {
     private int id;
     private String time;
 
-    public Stopwatchinfo(){}
+    public Stopwatchinfo() {
+    }
 
-    public Stopwatchinfo(String time){
-        this.time=time;
+    public Stopwatchinfo(String time) {
+        this.time = time;
     }
 
 

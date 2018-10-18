@@ -1,100 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#abcdef">
+    android:background="#abcdef"
+    android:orientation="vertical">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="寸金日程记录你的每一个重要事件"
         android:layout_gravity="center"
+        android:text="寸金日程记录你的每一个重要事件"
         android:textColor="#e2f5e2"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
     <LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/num"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:text="序号"
-            android:textSize="20sp"
-            android:textColor="#0000ff" />
+            android:textColor="#0000ff"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/messub"
-            android:layout_height="wrap_content"
             android:layout_width="50dp"
+            android:layout_height="wrap_content"
             android:text="主题"
-            android:textSize="20sp"
-            android:textColor="#0000ff" />
+            android:textColor="#0000ff"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/mesbody"
-            android:layout_height="wrap_content"
             android:layout_width="150dp"
+            android:layout_height="wrap_content"
             android:text="内容"
-            android:textSize="20sp"
-            android:textColor="#0000ff" />
+            android:textColor="#0000ff"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/mesdate"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="时间"
-            android:textSize="20sp"
-            android:textColor="#0000ff" />
+            android:textColor="#0000ff"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/today_result"
-        android:background="#8863a35d"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#8863a35d"></android.support.v7.widget.RecyclerView>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <ImageButton
-            android:id="@+id/searchtoday"
-            android:layout_width="80sp"
-            android:layout_height="80sp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/search" />
-
-        <ImageButton
-            android:id="@+id/addtoday"
-            android:layout_width="80sp"
-            android:layout_height="80sp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/add" />
 
         <LinearLayout
-            android:id="@+id/x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_toLeftOf="@id/searchtoday"
-            android:layout_alignParentBottom="true">
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/addtoday"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:layout_gravity="center"
+                android:background="@drawable/add" />
+
             <Button
                 android:id="@+id/inputdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="按时间查找"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/searchtoday"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:layout_gravity="center"
+                android:background="@drawable/search" />
+
             <EditText
                 android:id="@+id/inputsubject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="按主题查询"
                 android:textSize="20sp" />
-
         </LinearLayout>
+    </LinearLayout>
 
-    </RelativeLayout>
 </LinearLayout>
