@@ -2,6 +2,7 @@ package com.mao.remind_test2.Today;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +46,9 @@ public class AddtodayActivity extends AppCompatActivity {
             actionBar.hide();
         }
         setContentView(R.layout.addtoday_layout);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);//关闭通知栏
+        notificationManager.cancel(1);//取消通知栏
 
         subject = (EditText) findViewById(R.id.subject);
         body = (EditText) findViewById(R.id.body);

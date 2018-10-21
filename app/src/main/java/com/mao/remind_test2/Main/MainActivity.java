@@ -1,12 +1,15 @@
 package com.mao.remind_test2.Main;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -96,19 +99,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.clock_layout:
                 mViewPager.setCurrentItem(0);
-                updateBottomLinearLayoutSelect(true, false, false, false);
+                updateBottomLinearLayoutBackground(0);
                 break;
             case R.id.stopwatch_layout:
                 mViewPager.setCurrentItem(1);
-                updateBottomLinearLayoutSelect(false, true, false, false);
+                updateBottomLinearLayoutBackground(1);
                 break;
             case R.id.chronometer_layout:
                 mViewPager.setCurrentItem(2);
-                updateBottomLinearLayoutSelect(false, false, true, false);
+                updateBottomLinearLayoutBackground(2);
                 break;
             case R.id.today_layout:
                 mViewPager.setCurrentItem(3);
-                updateBottomLinearLayoutSelect(false, false, false, true);
+                updateBottomLinearLayoutBackground(3);
                 break;
             case R.id.set:
                 showPopupMenu(setBtn);
@@ -150,15 +153,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mViewPager.setAdapter(myFragmentAdapter);
         mViewPager.setCurrentItem(0);
         title.setText(titleName[0]);
-        updateBottomLinearLayoutSelect(true, false, false, false);
+        updateBottomLinearLayoutBackground(0);
 
     }
 
-    private void updateBottomLinearLayoutSelect(boolean f, boolean s, boolean t, boolean r) {
-        clock_layout.setSelected(f);
-        stopwatch_layout.setSelected(s);
-        chronometer_layout.setSelected(t);
-        today_layout.setSelected(r);
+    private void updateBottomLinearLayoutBackground(int x) {
+        switch (x) {
+            case 0:
+                clock_layout.setBackgroundResource(R.color.set);
+                stopwatch_layout.setBackgroundResource(R.color.noset);
+                chronometer_layout.setBackgroundResource(R.color.noset);
+                today_layout.setBackgroundResource(R.color.noset);
+                break;
+            case 1:
+                clock_layout.setBackgroundResource(R.color.noset);
+                stopwatch_layout.setBackgroundResource(R.color.set);
+                chronometer_layout.setBackgroundResource(R.color.noset);
+                today_layout.setBackgroundResource(R.color.noset);
+                break;
+            case 2:
+                clock_layout.setBackgroundResource(R.color.noset);
+                stopwatch_layout.setBackgroundResource(R.color.noset);
+                chronometer_layout.setBackgroundResource(R.color.set);
+                today_layout.setBackgroundResource(R.color.noset);
+                break;
+            case 3:
+                clock_layout.setBackgroundResource(R.color.noset);
+                stopwatch_layout.setBackgroundResource(R.color.noset);
+                chronometer_layout.setBackgroundResource(R.color.noset);
+                today_layout.setBackgroundResource(R.color.set);
+                break;
+            default:
+                break;
+        }
     }
 
     class ViewPagetOnPagerChangedLisenter implements ViewPager.OnPageChangeListener {
@@ -169,10 +196,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onPageSelected(int position) {
-            boolean[] state = new boolean[titleName.length];
-            state[position] = true;
             title.setText(titleName[position]);
-            updateBottomLinearLayoutSelect(state[0], state[1], state[2], state[3]);
+            updateBottomLinearLayoutBackground(position);
         }
 
         @Override
@@ -323,33 +348,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        Intent intent = new Intent(this, MainActivity.class);
+    protected void onPause() {
+        super.onPause();
+        String id = "channel_background";
+        String name = "后台显示通知";
+        Intent intent = new Intent(Intent.ACTION_MAIN);//核心是先隐式启动Activity,先setAction,再设置启动模式（不新建活动）
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setComponent(new ComponentName(this.getPackageName(), this.getPackageName() + "." + this.getLocalClassName()));//打开的活动
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);//设置启动模式
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);//通知栏
-        //获取通知栏
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setContentTitle("寸金")
-                .setContentText("寸金寸光阴")
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.welcome)
-                .setOngoing(true)//无法滑动删除，常驻通知栏
-                .setContentIntent(pendingIntent);//点击事件
-        notificationManager.notify(1, builder.build());
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_LOW);
+            notificationManager.createNotificationChannel(mChannel);
+            notification = new Notification.Builder(this)
+                    .setChannelId(id)
+                    .setContentTitle("寸金")
+                    .setContentText("寸金寸光阴")
+                    .setWhen(System.currentTimeMillis())
+                    .setOngoing(true)
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(R.drawable.welcome).build();
+        } else {
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                    .setContentTitle("寸金")
+                    .setContentText("寸金寸光阴!")
+                    .setWhen(System.currentTimeMillis())
+                    .setSmallIcon(R.drawable.welcome)
+                    .setOngoing(true)
+                    .setContentIntent(pendingIntent);
+            notification = notificationBuilder.build();
+        }
+        notificationManager.notify(1, notification);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);//关闭通知栏
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);//关闭通知栏
         notificationManager.cancel(1);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);//关闭通知栏
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);//关闭通知栏
         notificationManager.cancel(1);
     }
 }

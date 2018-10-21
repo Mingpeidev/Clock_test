@@ -1,6 +1,7 @@
 package com.mao.remind_test2.Clock;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,6 +46,9 @@ public class ModifyclockActivity extends AppCompatActivity {
             actionBar.hide();
         }
         setContentView(R.layout.addclock_layout);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);//关闭通知栏
+        notificationManager.cancel(1);//取消通知栏
 
         sure = (Button) findViewById(R.id.sure_btn);
         cancal = (Button) findViewById(R.id.cancel_btn);
