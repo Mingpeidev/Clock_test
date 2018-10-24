@@ -30,9 +30,9 @@ public class ClockHelper {
             intent.putExtra("ringUrl", ringUrl);
             PendingIntent pi = PendingIntent.getBroadcast(context, sign, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             if (time < System.currentTimeMillis()) {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, time + 24 * 60 * 60 * 1000, pi);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time + 24 * 60 * 60 * 1000, pi);//新版api精确设置闹钟
             } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, time, pi);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pi);
             }
         }
 
