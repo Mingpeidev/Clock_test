@@ -130,7 +130,7 @@ public class StopwatchFragment extends Fragment {
                     stopwatchinfoList.clear();
                     DataSupport.deleteAll(Stopwatchinfo.class);
                     stopwatchAdapter.refreshData(stopwatchinfoList);
-                } else {
+                } else {//计次
                     Stopwatchinfo stopwatchinfo = new Stopwatchinfo();
                     stopwatchinfo.setTime(tvtime.getText().toString());
                     stopwatchinfo.save();

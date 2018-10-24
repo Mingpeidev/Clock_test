@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.mao.remind_test2.R;
+import com.mao.remind_test2.Util.ClockHelper;
 
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
@@ -35,9 +36,9 @@ import java.util.List;
 
 public class ClockFragment extends Fragment {
 
+    private ClockHelper clockHelper;
+
     private List<Clockinfo> clockinfoList = new ArrayList<>();
-    private AlarmManager alarmManager;
-    private PendingIntent pi;
 
     private ImageButton addBtn = null;
     private RecyclerView clock_recycle;
@@ -49,7 +50,7 @@ public class ClockFragment extends Fragment {
         addBtn = view.findViewById(R.id.addclock);
         clock_recycle = view.findViewById(R.id.clock_recycleview);
 
-        alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        clockHelper = new ClockHelper(getActivity());
 
         return view;
     }
@@ -91,7 +92,10 @@ public class ClockFragment extends Fragment {
                 Calendar mCalendar = Calendar.getInstance();
                 mCalendar.setTimeInMillis(System.currentTimeMillis());
 
-                View view1 = clock_recycle.getChildAt(position);
+                int firstVisibleItems;//第一个可见item
+                firstVisibleItems = ((LinearLayoutManager) clock_recycle.getLayoutManager()).findFirstVisibleItemPosition();
+
+                View view1 = clock_recycle.getChildAt(position - firstVisibleItems);
                 TextView id1 = view1.findViewById(R.id.clockid);
                 String id2 = id1.getText().toString();
                 String on_off = "";
@@ -99,14 +103,25 @@ public class ClockFragment extends Fragment {
                 int mHour;
                 int mMinute;
                 String mText;
+                String ringUrl;
                 List<Clockinfo> clockinfos1 = DataSupport.where("id =?", id2).find(Clockinfo.class);
                 for (Clockinfo clockinfo : clockinfos1) {
-                    on_off = clockinfo.getOn_off();
                     sign = clockinfo.getSign();
                     mHour = clockinfo.getHour();
                     mMinute = clockinfo.getMinute();
                     String mRepead = clockinfo.getRepead();
+                    ringUrl = clockinfo.getRing();
                     mText = clockinfo.getText();
+
+                    if (ringUrl.equals("布谷鸟")) {
+                        ringUrl = "buguniao";
+                    } else if (ringUrl.equals("滴滴")) {
+                        ringUrl = "didi";
+                    } else if (ringUrl.equals("嘟嘟")) {
+                        ringUrl = "dudu";
+                    } else if (ringUrl.equals("闹铃")) {
+                        ringUrl = "naozhong";
+                    }
 
                     mCalendar.set(Calendar.HOUR_OF_DAY, mHour);
                     mCalendar.set(Calendar.MINUTE, mMinute);
@@ -116,32 +131,11 @@ public class ClockFragment extends Fragment {
                     clockinfoList.clear();
 
                     if (b) {
-                        if (mRepead.equals("只响一次")) {
-                            Intent intent = new Intent(getActivity(), ClockReceiver.class);
-                            intent.putExtra("msg", mText);
-                            pi = PendingIntent.getBroadcast(getActivity(), sign, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                            if (mCalendar.getTimeInMillis() < System.currentTimeMillis()) {
-                                alarmManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis() + 24 * 60 * 60 * 1000, pi);
-                            } else {
-                                alarmManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pi);
-                            }
-                        } else {
-                            Intent intent1 = new Intent(getActivity(), ClockReceiver.class);
-                            intent1.putExtra("msg", mText);
-                            intent1.putExtra("interval", 1000 * 24 * 60 * 60);
-                            pi = PendingIntent.getBroadcast(getActivity(), sign, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-                            intent1.putExtra("sign", sign);
-                            if (mCalendar.getTimeInMillis() < System.currentTimeMillis()) {
-                                alarmManager.setWindow(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis() + 24 * 60 * 60 * 1000, 1000 * 24 * 60 * 60, pi);
-                            } else {
-                                alarmManager.setWindow(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), 1000 * 24 * 60 * 60, pi);
-                            }
-                        }
+                        //打开闹钟
+                        clockHelper.openClock(sign, mRepead, mText, ringUrl, mCalendar.getTimeInMillis());
                         on_off = "on";
                     } else {
-                        Intent intent = new Intent(getActivity(), ClockReceiver.class);
-                        pi = PendingIntent.getBroadcast(getActivity(), sign, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        alarmManager.cancel(pi);
+                        clockHelper.closeClock(sign);
                         on_off = "off";
                     }
                 }
@@ -171,7 +165,10 @@ public class ClockFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {//点击修改
 
-                View view1 = clock_recycle.getChildAt(position);
+                int firstVisibleItems;//第一个可见item
+                firstVisibleItems = ((LinearLayoutManager) clock_recycle.getLayoutManager()).findFirstVisibleItemPosition();
+
+                View view1 = clock_recycle.getChildAt(position - firstVisibleItems);
                 TextView id1 = view1.findViewById(R.id.clockid);
                 String id2 = id1.getText().toString();
 
@@ -192,15 +189,17 @@ public class ClockFragment extends Fragment {
                         .setPositiveButton("删除",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        View view1 = clock_recycle.getChildAt(position);
+
+                                        int firstVisibleItems;//第一个可见item
+                                        firstVisibleItems = ((LinearLayoutManager) clock_recycle.getLayoutManager()).findFirstVisibleItemPosition();
+
+                                        View view1 = clock_recycle.getChildAt(position - firstVisibleItems);
                                         TextView id1 = view1.findViewById(R.id.clockid);
                                         String id2 = id1.getText().toString();
                                         List<Clockinfo> clockinfos1 = DataSupport.where("id =?", id2).find(Clockinfo.class);
                                         for (Clockinfo clockinfo : clockinfos1) {
-                                            Intent intent = new Intent(getActivity(), ClockReceiver.class);
                                             int sign = clockinfo.getSign();
-                                            pi = PendingIntent.getBroadcast(getActivity(), sign, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                            alarmManager.cancel(pi);
+                                            clockHelper.closeClock(sign);
                                         }
 
                                         DataSupport.deleteAll(Clockinfo.class, "id=?", id2);

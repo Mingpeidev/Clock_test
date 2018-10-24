@@ -13,6 +13,7 @@ public class Clockinfo extends DataSupport {
     private int minute;
     private String time;
     private String repead;
+    private String ring;
     private String text;
     private String on_off;
 
@@ -66,6 +67,10 @@ public class Clockinfo extends DataSupport {
         this.on_off = on_off;
     }
 
+    public void setRing(String ring) {
+        this.ring = ring;
+    }
+
     public int getId() {
         return id;
     }
@@ -96,5 +101,9 @@ public class Clockinfo extends DataSupport {
 
     public String getOn_off() {
         return on_off;
+    }
+
+    public String getRing() {
+        return ring;
     }
 }

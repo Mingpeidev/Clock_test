@@ -94,7 +94,10 @@ public class TodayFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
 
-                View view1 = result.getChildAt(position);
+                int firstVisibleItems;//第一个可见item
+                firstVisibleItems = ((LinearLayoutManager) result.getLayoutManager()).findFirstVisibleItemPosition();
+
+                View view1 = result.getChildAt(position - firstVisibleItems);
                 TextView id1 = view1.findViewById(R.id.num);
                 String id2 = id1.getText().toString();
 
@@ -115,7 +118,10 @@ public class TodayFragment extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
 
-                                        View view1 = result.getChildAt(position);
+                                        int firstVisibleItems;//第一个可见item
+                                        firstVisibleItems = ((LinearLayoutManager) result.getLayoutManager()).findFirstVisibleItemPosition();
+
+                                        View view1 = result.getChildAt(position - firstVisibleItems);
                                         TextView id1 = view1.findViewById(R.id.num);
                                         String id2 = id1.getText().toString();
 

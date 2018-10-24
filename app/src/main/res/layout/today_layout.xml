@@ -66,7 +66,9 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20sp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageButton
@@ -76,6 +78,15 @@
                 android:layout_gravity="center"
                 android:background="@drawable/add" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50sp"
+            android:gravity="center"
+            android:orientation="vertical">
+
             <Button
                 android:id="@+id/inputdate"
                 android:layout_width="wrap_content"
@@ -83,11 +94,20 @@
                 android:text="按时间查找"
                 android:textSize="15sp" />
 
+            <EditText
+                android:id="@+id/inputsubject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="按主题查询"
+                android:textSize="20sp" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50sp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageButton
@@ -97,12 +117,6 @@
                 android:layout_gravity="center"
                 android:background="@drawable/search" />
 
-            <EditText
-                android:id="@+id/inputsubject"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="按主题查询"
-                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 

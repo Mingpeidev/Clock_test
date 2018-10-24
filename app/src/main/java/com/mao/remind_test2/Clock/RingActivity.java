@@ -2,6 +2,7 @@ package com.mao.remind_test2.Clock;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ApplicationInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.mao.remind_test2.R;
 
 public class RingActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
+    private String ringUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,20 +23,24 @@ public class RingActivity extends AppCompatActivity {
 
         String message = this.getIntent().getStringExtra("msg");//接受备注信息
 
-        mediaPlayer = MediaPlayer.create(RingActivity.this, R.raw.buguniao);
+        ringUrl = this.getIntent().getStringExtra("ringUrl");
+        ApplicationInfo applicationInfo = getApplicationInfo();
+        int resID = getResources().getIdentifier(ringUrl, "raw", applicationInfo.packageName);
+
+        mediaPlayer = MediaPlayer.create(RingActivity.this, resID);
         mediaPlayer.setLooping(true);//循环播放
         mediaPlayer.start();
+
         if (message.equals("时间到")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("停止计时器？")
                     .setIcon(R.drawable.welcome)
                     .setMessage(message)
+                    .setCancelable(false)
                     .setPositiveButton("确定",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     RingActivity.this.finish();
-                                    mediaPlayer.stop();
-                                    mediaPlayer.release();
                                 }
                             }).create().show();
         } else {
@@ -42,15 +48,21 @@ public class RingActivity extends AppCompatActivity {
             builder.setTitle("停止闹钟？")
                     .setIcon(R.drawable.welcome)
                     .setMessage(message)
+                    .setCancelable(false)
                     .setPositiveButton("确定",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     RingActivity.this.finish();
-                                    mediaPlayer.stop();
-                                    mediaPlayer.release();
                                 }
                             }).create().show();
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.stop();
+        mediaPlayer.release();
     }
 }
