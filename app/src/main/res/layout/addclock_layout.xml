@@ -57,6 +57,7 @@
             android:id="@+id/repeat_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30sp"
             android:textSize="24sp" />
     </LinearLayout>
 
@@ -76,6 +77,7 @@
             android:id="@+id/ring_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30sp"
             android:textSize="24sp" />
     </LinearLayout>
 
@@ -95,6 +97,7 @@
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="40sp"
             android:hint="请输入备注信息"
             android:textSize="24sp" />
     </LinearLayout>

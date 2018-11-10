@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         initViewpager();
 
-
         SharedPreferences spf = getSharedPreferences("loginsuccess", MODE_PRIVATE);//取出已登陆用户信息
         nameurl = spf.getString("nameurl", "");
 

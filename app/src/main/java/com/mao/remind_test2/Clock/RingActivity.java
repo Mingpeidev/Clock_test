@@ -44,7 +44,7 @@ public class RingActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("停止计时器？")
                     .setIcon(R.drawable.welcome)
-                    .setMessage("备注:  " + message + "\n" + "时间:  " + time)
+                    .setMessage("备注:    " + message)
                     .setCancelable(false)
                     .setPositiveButton("确定",
                             new DialogInterface.OnClickListener() {
@@ -56,7 +56,7 @@ public class RingActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("停止闹钟？")
                     .setIcon(R.drawable.welcome)
-                    .setMessage("备注:  " + message + "\n" + "时间:  " + time)
+                    .setMessage("备注:    " + message + "\n" + "时间:    " + time)
                     .setCancelable(false)
                     .setPositiveButton("确定",
                             new DialogInterface.OnClickListener() {
