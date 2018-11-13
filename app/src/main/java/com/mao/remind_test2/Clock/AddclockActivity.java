@@ -1,10 +1,7 @@
 package com.mao.remind_test2.Clock;
 
-import android.app.AlarmManager;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.mao.remind_test2.Util.ClockHelper;
 import com.mao.remind_test2.R;
@@ -97,6 +95,10 @@ public class AddclockActivity extends AppCompatActivity {
 
                 //设置闹钟
                 clockHelp.openClock(sign, repeat_text.getText().toString(), text.getText().toString(), ringUrl, mCalendar.getTimeInMillis());
+
+                Toast mToast = Toast.makeText(AddclockActivity.this, "", Toast.LENGTH_SHORT);
+                mToast.setText("闹钟将在  " + mHour + " : " + mMinute + "  响铃");
+                mToast.show();
 
                 //保存闹钟到sqlite
                 Clockinfo clockinfo = new Clockinfo();
